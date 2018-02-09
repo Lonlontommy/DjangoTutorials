@@ -36,4 +36,4 @@ class Post(models.Model):
         return reverse('blog:post_detail', args=[self.publish.year,
                                                  self.publish.strftime('%m'),
                                                  self.publish.strftime('%d'),
-                                                 self.slug])
+self.slug])

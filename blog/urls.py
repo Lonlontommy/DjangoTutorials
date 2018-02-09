@@ -1,6 +1,7 @@
-from django.conf.urls import url
-from . import views
 
+from django.conf.urls import include, url
+from . import views
+from django.contrib import admin
 
 urlpatterns = [
     # post views
