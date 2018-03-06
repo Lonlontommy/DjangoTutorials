@@ -27,5 +27,7 @@ urlpatterns = [
     url(r'^login/', auth_views.login), #, name='login'),
 	url(r'blog', include('blog.urls', namespace='blog', app_name='blog')),
     #path('', TemplateView.as_view(template_name='home.html'), name='home'),
-    url(r'^logout/', auth_views.logout, name='logout'),
+    url(r'^logout', auth_views.logout, name='logout'),
+    #url(r'^logout/', auth_views.logout, name='logout'),
+
 ]

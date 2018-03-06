@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView
 from .models import Post, Comment
-from .forms import EmailPostForm, CommentForm
+from .forms import EmailPostForm, CommentForm, PostForm
 from django.contrib.auth.models import User
+from django.utils.text import slugify
 
 # Create your views here.
 # Retrieves a web request and returns a web response. Inside view goes all the the logic to return desired response. First create application view, define url pattern for each view, and then templates = Returns http response.
@@ -25,31 +26,24 @@ def post_list(request, category=None):
 
 
 class PostListView(ListView):
-    queryset = Post.published.all()
+    queryset = Post.published.all() 
     context_object_name = 'posts'
     paginate_by = 3
     template_name = 'blog/post/list.html'
 
-def create_blog(request): 
-	if(request.method =='POST'):
-		print "request.POST", request.POST
-		title = request.POST['title']
-		#author = request.POST['author']
-		body = request.POST['body']
-		u = User.objects.get(username='lonlon')
-		post = Post(title=title, author=u, body=body, status='published', slug=title)
-		post.save()
-		print 'Post saved'
-
-		return redirect('/')
+def create_blog(request):
+	if request.method == "POST":
+		form = PostForm(request.POST)
+		if form.is_valid():
+			post = form.save()
+			post.author = request.user
+			post.save()
+		return redirect('post_list', pk=post.pk)
 	else:
-		print 'request.get 1'
-		users = User.objects.all()
-		user = {
-				'users':users
-		}
-		print 'request.get 2'
-        return render(request, 'blog/post/create_blog.html', user)
+		form = PostForm()
+		return render(request, 'blog/post/create_blog.html', {'form': form})
+
+
 
 
 def post_detail(request, year, month, day, post):

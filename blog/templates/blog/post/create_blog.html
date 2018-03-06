@@ -1,23 +1,14 @@
 {% extends "blog/base.html" %}
 {% load staticfiles %}
 
+
 {% block content %}
-<center/>	
-    <title>Add post</title>
-		<div class="container">
-			<form action="blog/create_blog" method="post"> {% csrf_token %}	
-				<b>Create Blog</b><br /> <br />
-
-				<label for="title">Post title</label> <br/>
-  				<input placeholder="Title" type="text" name="title" id="title" /><br /><br />
-
-				<label for="body">Body</label> <br/>
-				<textarea placeholder="Body" rows="20" cols="90" name="body" id="body">
-				</textarea>
-				<br/><br />
-			
-  				<input type="submit" value="Submit post" />
-			</form> 
-		</div>
-<center/>
+    <h1>New post</h1>
+    <form method="POST" action="/blog/create_blog">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">Save</button>
+    </form>
 {% endblock %}
+
+
